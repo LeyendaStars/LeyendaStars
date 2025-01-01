@@ -1,0 +1,518 @@
+<html><head><base href="https://example.com">
+<meta charset="utf-8">
+<title>Mobile Game Full Screen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overscroll-behavior: contain;
+    touch-action: manipulation;
+    font-family: Arial, sans-serif;
+    background-color: #2c3e50;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#game-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2c3e50;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+#settings-button {
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    border: none;
+}
+
+#profile-button {
+    position: absolute;
+    top: 7%;
+    left: 1%;
+    background-color: #9b59b6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    border: none;
+}
+
+#brawler-button {
+    position: absolute;
+    top: 13%;
+    left: 1%;
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    border: none;
+}
+
+#exit-button {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none;
+}
+
+#top-button {
+    position: absolute;
+    top: 7%;
+    right: 1%;
+    background-color: #f39c12;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none;
+}
+
+#username-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+#username-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#username-input {
+    padding: 10px;
+    width: 200px;
+    margin-bottom: 15px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+}
+
+#username-submit {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#loading-screen {
+    width: 80%;
+    text-align: center;
+}
+
+#loading-bar {
+    width: 100%;
+    height: 30px;
+    background-color: #34495e;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#loading-progress {
+    width: 0%;
+    height: 100%;
+    background-color: #3498db;
+    transition: width 0.5s ease-in-out;
+}
+
+#loading-text {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#menu-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+#brawlers-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+#profile-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+#top-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+#mystery-character {
+    width: 200px;
+    height: 200px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+#character-name {
+    color: white;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+#back-button {
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    border: none;
+}
+
+#profile-info {
+    background-color: rgba(255,255,255,0.1);
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#brawlers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.brawler-slot {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(255,255,255,0.1);
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+#ranking-container {
+    background-color: rgba(255,255,255,0.1);
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#top-player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+}
+
+#top-player-name {
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: rainbow 2s linear infinite;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#top-player-score {
+    color: white;
+    font-size: 24px;
+}
+
+#ranking-back-button {
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    border: none;
+}
+
+@keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+</style>
+</head>
+<body>
+<div id="username-overlay">
+    <div id="username-form">
+        <h2>Elige tu nombre de usuario</h2>
+        <input type="text" id="username-input" placeholder="Nombre de usuario">
+        <button id="username-submit">Confirmar</button>
+    </div>
+</div>
+
+<div id="game-container">
+    <div id="loading-screen">
+        <h1 id="loading-text">Cargando...</h1>
+        <div id="loading-bar">
+            <div id="loading-progress"></div>
+        </div>
+    </div>
+    
+    <div id="menu-screen">
+        <div id="mystery-character"></div>
+        <div id="character-name">Rico</div>
+        <button id="settings-button">Ajustes</button>
+        <button id="profile-button">Perfil</button>
+        <button id="brawler-button">Brawlers</button>
+        <button id="exit-button">Salir</button>
+        <button id="top-button">Top</button>
+    </div>
+
+    <div id="brawlers-screen">
+        <h1>Brawlers</h1>
+        <div id="brawlers-grid">
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+            <div class="brawler-slot"></div>
+        </div>
+        <button id="back-button">Volver</button>
+    </div>
+
+    <div id="profile-screen">
+        <h1>Perfil</h1>
+        <div id="profile-info">
+            <p>Nombre de Usuario: <span id="profile-username"></span></p>
+            <!-- Add more profile stats here -->
+        </div>
+        <button id="profile-back-button">Volver</button>
+    </div>
+
+    <div id="top-screen">
+        <h1>Top Ranking</h1>
+        <div id="ranking-container">
+            <div id="top-player">
+                <span id="top-player-name">JonathanGIZ</span>
+                <span id="top-player-score">0</span>
+            </div>
+        </div>
+        <button id="ranking-back-button">Volver</button>
+    </div>
+</div>
+
+<script>document.addEventListener('DOMContentLoaded', () => {
+  const loadingScreen = document.getElementById('loading-screen');
+  const menuScreen = document.getElementById('menu-screen');
+  const brawlersScreen = document.getElementById('brawlers-screen');
+  const profileScreen = document.getElementById('profile-screen');
+  const topScreen = document.getElementById('top-screen');
+  const loadingProgress = document.getElementById('loading-progress');
+  const loadingText = document.getElementById('loading-text');
+  const exitButton = document.getElementById('exit-button');
+  const topButton = document.getElementById('top-button');
+  const settingsButton = document.getElementById('settings-button');
+  const brawlerButton = document.getElementById('brawler-button');
+  const profileButton = document.getElementById('profile-button');
+  const backButton = document.getElementById('back-button');
+  const profileBackButton = document.getElementById('profile-back-button');
+  const rankingBackButton = document.getElementById('ranking-back-button');
+  const gameContainer = document.getElementById('game-container');
+  const usernameOverlay = document.getElementById('username-overlay');
+  const usernameInput = document.getElementById('username-input');
+  const usernameSubmit = document.getElementById('username-submit');
+  const profileUsername = document.getElementById('profile-username');
+  
+  function validateUsername(username) {
+    const usernameRegex = /^[A-Za-z]+$/;
+    const forbiddenUsername = /giz/i;
+    return usernameRegex.test(username) && !forbiddenUsername.test(username);
+  }
+  
+  function checkUsername() {
+    const savedUsername = localStorage.getItem('gameUsername');
+    if (!savedUsername) {
+      usernameOverlay.style.display = 'flex';
+    } else {
+      profileUsername.textContent = savedUsername;
+    }
+  }
+  
+  usernameSubmit.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username && validateUsername(username)) {
+      localStorage.setItem('gameUsername', username);
+      usernameOverlay.style.display = 'none';
+      profileUsername.textContent = username;
+    } else {
+      alert('Por favor, introduce un nombre válido (solo letras, sin GIZ)');
+    }
+  });
+  
+  function enterFullScreen() {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    }
+  }
+  
+  function updateLoadingProgress(progress) {
+    loadingProgress.style.width = `${progress}%`;
+    loadingText.textContent = `Cargando... ${Math.round(progress)}%`;
+  }
+  
+  function simulateLoading() {
+    let progress = 0;
+    const loadingInterval = setInterval(() => {
+      progress += Math.random() * 10;
+      if (progress >= 100) {
+        clearInterval(loadingInterval);
+        updateLoadingProgress(100);
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+          menuScreen.style.display = 'block';
+          exitButton.style.display = 'block';
+          topButton.style.display = 'block';
+          checkUsername();
+        }, 500);
+      } else {
+        updateLoadingProgress(progress);
+      }
+    }, 200);
+  }
+  
+  exitButton.addEventListener('click', () => {
+    alert('No puedes salir del juego en este momento.');
+  });
+  
+  topButton.addEventListener('click', () => {
+    menuScreen.style.display = 'none';
+    topScreen.style.display = 'block';
+  });
+  
+  settingsButton.addEventListener('click', () => {
+    alert('Función de ajustes próximamente.');
+  });
+  
+  brawlerButton.addEventListener('click', () => {
+    menuScreen.style.display = 'none';
+    brawlersScreen.style.display = 'block';
+  });
+  
+  profileButton.addEventListener('click', () => {
+    menuScreen.style.display = 'none';
+    profileScreen.style.display = 'block';
+  });
+  
+  backButton.addEventListener('click', () => {
+    brawlersScreen.style.display = 'none';
+    menuScreen.style.display = 'block';
+  });
+  
+  profileBackButton.addEventListener('click', () => {
+    profileScreen.style.display = 'none';
+    menuScreen.style.display = 'block';
+  });
+  
+  rankingBackButton.addEventListener('click', () => {
+    topScreen.style.display = 'none';
+    menuScreen.style.display = 'block';
+  });
+  
+  document.addEventListener('fullscreenchange', event => {
+    if (!document.fullscreenElement) {
+      enterFullScreen();
+    }
+  });
+  
+  document.body.addEventListener('touchmove', e => {
+    e.preventDefault();
+  }, {
+    passive: false
+  });
+  
+  document.addEventListener('gesturestart', e => {
+    e.preventDefault();
+  });
+  
+  enterFullScreen();
+  simulateLoading();
+});</script>
+</body></html>

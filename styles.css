@@ -1,0 +1,273 @@
+:root {
+  --primary-color: #ff4d00;
+  --secondary-color: #ff8c00;
+  --background-color: #1a0f0f;
+  --text-color: #fff9f5;
+  --error-color: #ff0000;
+  --success-color: #00ff00;
+  --modal-overlay: rgba(26, 15, 15, 0.9);
+  --box-shadow: 0 0 20px rgba(255, 77, 0, 0.3);
+  --admin-gradient: linear-gradient(90deg, 
+    #ff0000, #ff4500, #ff6600, #ff7f00, 
+    #ffa500, #00ff00, #0000ff, #4b0082, #8b00ff);
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes flames {
+  0%, 100% { 
+    box-shadow: 0 0 20px #ff4d00,
+                0 0 40px #ff4d00,
+                0 0 60px #ff4d00;
+  }
+  50% { 
+    box-shadow: 0 0 25px #ff8c00,
+                0 0 45px #ff8c00,
+                0 0 65px #ff8c00;
+  }
+}
+
+@keyframes fireBackground {
+  0% { background-position: 0% 100%; }
+  50% { background-position: 100% 0%; }
+  100% { background-position: 0% 100%; }
+}
+
+@keyframes floatingEmbers {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-1000px) rotate(360deg); }
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(45deg, #1a0f0f, #2a1f1f);
+  color: var(--text-color);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent 0%,
+      rgba(255, 77, 0, 0.1) 50%,
+      transparent 100%
+    );
+  animation: fireBackground 10s infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.ember {
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  background: #ff4d00;
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: floatingEmbers 3s linear infinite;
+  z-index: -1;
+}
+
+#app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+h1, h2 {
+  color: #ff4d00;
+  text-shadow: 0 0 10px rgba(255, 77, 0, 0.5);
+  animation: flicker 3s infinite;
+}
+
+button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(45deg, #ff4d00, #ff8c00);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  animation: flames 2s infinite;
+}
+
+button:hover {
+  transform: scale(1.05);
+  animation: flames 1s infinite;
+}
+
+button:disabled {
+  background: #4a4a4a;
+  animation: none;
+}
+
+#clickSection {
+  text-align: center;
+  margin: 30px 0;
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(26, 15, 15, 0.8);
+  box-shadow: 0 0 30px rgba(255, 77, 0, 0.2);
+}
+
+#clickCount {
+  font-size: 64px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff4d00, #ff8c00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 77, 0, 0.5);
+}
+
+#clickButton {
+  font-size: 28px;
+  padding: 20px 40px;
+  background: linear-gradient(45deg, #ff4d00, #ff8c00);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 30px rgba(255, 77, 0, 0.3);
+}
+
+.message {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background: rgba(255, 0, 0, 0.2);
+  color: white;
+  animation: flicker 2s infinite;
+}
+
+#leaderboard {
+  background: rgba(26, 15, 15, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(255, 77, 0, 0.2);
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  margin: 5px 0;
+  border-bottom: 1px solid rgba(255, 77, 0, 0.2);
+  transition: all 0.3s;
+}
+
+.leaderboard-item:hover {
+  background: rgba(255, 77, 0, 0.1);
+  transform: scale(1.02);
+}
+
+.admin-name {
+  background: var(--admin-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--modal-overlay);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: rgba(26, 15, 15, 0.95);
+  padding: 30px;
+  border-radius: 10px;
+  min-width: 300px;
+  box-shadow: 0 0 30px rgba(255, 77, 0, 0.3);
+  border: 1px solid rgba(255, 77, 0, 0.3);
+  animation: flames 3s infinite;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #ff8c00;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(255, 77, 0, 0.3);
+  border-radius: 5px;
+  background: rgba(26, 15, 15, 0.8);
+  color: white;
+  transition: all 0.3s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #ff4d00;
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.3);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.9em;
+  margin-top: 5px;
+  animation: flicker 2s infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  #app {
+    padding: 10px;
+  }
+  
+  header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #clickButton {
+    padding: 15px 30px;
+    font-size: 20px;
+  }
+  
+  .modal-content {
+    margin: 10px;
+    width: calc(100% - 20px);
+  }
+      }
